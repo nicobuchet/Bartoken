@@ -62,7 +62,7 @@ module.exports = {
       network_id: 97,       
       gas: 5500000,       
       confirmations: 10,   
-      timeoutBlocks: 30000,  
+      timeoutBlocks: 300000,  
       skipDryRun: true     
     },
     bsc: {
