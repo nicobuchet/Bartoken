@@ -21,7 +21,7 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 //
 // const fs = require('fs');
-const mnemonic = require('./secrets.json').mnemonic
+const { mnemonic, BSCSCANAPIKEY } = require('./env.json');
 
 module.exports = {
   /**
@@ -33,7 +33,12 @@ module.exports = {
    *
    * $ truffle test --network <network-name>
    */
-
+  plugins: [
+    'truffle-plugin-verify'
+  ],
+  api_keys: {
+    bscscan: BSCSCANAPIKEY
+  },
   networks: {
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
@@ -48,12 +53,12 @@ module.exports = {
     },
     // Another network with more advanced options...
     // advanced: {
-    // port: 8777,             // Custom port
-    // network_id: 1342,       // Custom network
-    // gas: 8500000,           // Gas sent with each transaction (default: ~6700000)
-    // gasPrice: 20000000000,  // 20 gwei (in wei) (default: 100 gwei)
-    // from: <address>,        // Account to send txs from (default: accounts[0])
-    // websocket: true        // Enable EventEmitter interface for web3 (default: false)
+    //   port: 8777,             // Custom port
+    //   network_id: 1342,       // Custom network
+    //   gas: 8500000,           // Gas sent with each transaction (default: ~6700000)
+    //   gasPrice: 20000000000,  // 20 gwei (in wei) (default: 100 gwei)
+    //   from: "0x53701744b7DD94fcAd09cE7ED3a4c436Fe5aBC85",        // Account to send txs from (default: accounts[0])
+    //   websocket: true        // Enable EventEmitter interface for web3 (default: false)
     // },
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
@@ -66,11 +71,12 @@ module.exports = {
       skipDryRun: true     
     },
     bsc: {
-      provider: () => new HDWalletProvider(mnemonic, `https://bsc-dataseed1.binance.org`),
+      provider: () => new HDWalletProvider(mnemonic, `https://speedy-nodes-nyc.moralis.io/7cf2d0fd270723034924d3bf/bsc/mainnet`),
       network_id: 56,
       confirmations: 10,
       timeoutBlocks: 200,
-      skipDryRun: true
+      skipDryRun: true,
+      from: "0x53701744b7DD94fcAd09cE7ED3a4c436Fe5aBC85",
     },
     // Useful for private networks
     // private: {
@@ -82,7 +88,7 @@ module.exports = {
 
   // Set default mocha options here, use special reporters etc.
   mocha: {
-    // timeout: 100000
+    timeout: 100000
   },
 
   // Configure your compilers
@@ -90,13 +96,13 @@ module.exports = {
     solc: {
       version: "0.8.10",    // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
-      // settings: {          // See the solidity docs for advice about optimization and evmVersion
-      //  optimizer: {
-      //    enabled: false,
-      //    runs: 200
-      //  },
-      //  evmVersion: "byzantium"
-      // }
+      settings: {          // See the solidity docs for advice about optimization and evmVersion
+       optimizer: {
+         enabled: false,
+         runs: 200
+       },
+       evmVersion: "byzantium"
+      }
     }
   },
 
